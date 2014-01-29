@@ -1,0 +1,623 @@
+<h4>Users</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Логин</th>
+            
+            <th>Дата регистрации</th>
+            <th>Скидка</th>
+            <th>Действие</th>
+        </tr>
+        <tbody>
+            <tr class="success">
+                <td>abcsdssssssssssssssssssewwfdwefdwefwefwefwefsssssss</td>
+                
+                <td>12/12/12</td>
+                <td>3</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="" class="btn">
+                        <i class="icon-edit"></i>
+                        Изменить
+                        </a>
+                        <a href="" class="btn disabled">
+                        <i class="icon-info-sign"></i>
+                            Инфо
+                        </a>
+                        <a href="#myModal" class="btn btn-danger" data-toggle="modal">
+                        <i class="icon-lock icon-large icon-white"> </i> 
+                        Удалить
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>abc</td>
+                
+                <td>12/12/12</td>
+                <td>3</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="" class="btn">
+                        <i class="icon-edit"></i>
+                        Изменить
+                        </a>
+                        <a href="" class="btn">
+                        <i class="icon-info-sign"></i>
+                            Инфо
+                        </a>
+                        <a href="#myModal" class="btn btn-danger" data-toggle="modal">
+                        <i class="icon-trash icon-large icon-white"> </i> 
+                        Удалить
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>abc</td>
+                
+                <td>12/12/12</td>
+                <td>3</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="" class="btn">
+                        <i class="icon-edit"></i>
+                        Изменить
+                        </a>
+                        <a href="" class="btn">
+                        <i class="icon-info-sign"></i>
+                            Инфо
+                        </a>
+                        <a href="#myModal" class="btn btn-danger" data-toggle="modal">
+                        <i class="icon-trash icon-large icon-white"> </i> 
+                        Удалить
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </thead>
+</table>
+
+
+<!-- 
+        ИНФОРМАЦИЯ О СТРАНИЦЕ
+         -->
+<div class="row">
+    <div class="span12">
+        <div class="alert alert-info">
+            <strong>Инфо о странице</strong> <br>
+            Просмотр списка пользователей с возможностью фильтрации по разным полям <br>
+            Список доступных действий: <br>
+            &nbsp;&nbsp; <i class="icon-edit"></i> - изменение информации о пользователе <br>
+            &nbsp;&nbsp;<i class="icon-info-sign"></i> - детальная информация о пользователе <br>
+            &nbsp;&nbsp;<i class="icon-trash"></i> - удаление пользователя
+        </div>
+    </div>
+</div>
+
+
+<h5>Информация о пользователе</h5>
+<table class="table">
+    <tr>
+        <td>Логин</td>
+        <td>sam</td>
+    </tr>
+    <tr>
+        <td>ФИО</td>
+        <td>Иванов Иван Иванович</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>sam3434@mail.ru</td>
+    </tr>
+    <tr>
+        <td>Моб. телефон</td>
+        <td>0951234567</td>
+    </tr>
+    <tr>
+        <td>Адрес</td>
+        <td>Киев Ленина 1</td>
+    </tr>
+    <tr>
+        <td>Дата регистрации</td>
+        <td>12/12/12</td>
+    </tr>
+    <tr>
+        <td>Скидка</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Дата рождения</td>
+        <td>1/1/1999</td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $("._form input[type='text'],._form input[type='password']")
+        .focus(function(event) {
+            $(this).css("box-shadow", "0px 0px 7px rgb(0, 102, 255)");
+        }).blur(function(event) {
+            $(this).css("box-shadow", "0px 0px 0px");               
+        }); 
+
+        $('._form').submit(function(event) {
+            var _login = $('#login').val();
+            var _pass = $('#password').val();
+            $.ajax({
+                url: "ajax/auth_ajax.php",
+                type: "POST",
+                dataType: "text",
+                success: function (data) {
+                    //alert(data);
+                    if (data!="")
+                    {
+                        $('#auth_error').html(data);    
+                    }
+                    else
+                    {
+                        document.location.href = "index.php";
+                    }           
+                },
+                error: function (obj, err) {
+                    alert("Error "+err);
+                },
+                data: {login: _login, pass: _pass}
+            });
+            return false;           
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    var global_data;
+    $(function() {
+     $( document ).tooltip({
+         //track:true
+     });
+    });
+    jQuery(document).ready(function($) {
+     $('._form').submit(function(event) {
+         var _login = $('#login').val();
+         var _pass = $("#pass").val();
+         var _pass_rpt = $('#pass_rpt').val();
+         var _fam = $('#fam').val();
+         var _im = $('#im').val();
+         var _ot = $('#ot').val();
+         var _email = $('#email').val();
+         var _tel = $('#tel').val();
+         var _addr = $('#addr').val();
+         $.ajax({
+             url: "ajax/register_ajax.php",
+             type: "POST",
+             dataType: "json",
+             success: function (data) {
+                 /*
+                 Глобально запоминаем ошибки, чтоб знать нужно ли при blur
+                 соотв. input выделять его красным (ошибочный) или белым
+                 */
+                 global_data = data;
+                 var array = ["login", "pass", "pass_rpt", 
+                 "fam", "im", "ot", "email", "tel", "addr"];
+                 /*
+                 Выводим сообщения об ошибках заполнения полей при регистрации
+                 В array названия полей, для которых ошибка определена
+                 Идентификаторы input полей в форме совпадают с именами свойств
+                 в объекте data. Это позволило к свойствам data обращаться как к 
+                 data[array[i]], а к input через jQuery как $('#'+array[i]).                 
+                 */
+                 for (var i in array)
+                 {
+                     if (data[array[i]])
+                     {
+                         $('#'+array[i]).next().html(data[array[i]]);
+                         $('#'+array[i]).css("box-shadow", "0px 0px 7px rgb(185, 74, 72)");
+                     }
+                     else
+                     {
+                         $('#'+array[i]).next().html("");
+                         $('#'+array[i]).css("box-shadow", "0px 0px 0px");   
+                     }   
+                 }
+                 if (data['href']) 
+                 {
+                     window.location.href = data['href'];
+                 }
+                    
+             },
+             error: function (obj, err) {
+                 alert("Error "+err);
+             },
+             data: {login: _login, pass: _pass, pass_rpt: _pass_rpt,
+             fam: _fam, im: _im, ot: _ot, email: _email, 
+             tel: _tel, addr: _addr}
+         });
+         return false;           
+     });
+
+     $("._form input[type='text'],._form input[type='password'],._form textarea")
+     .focus(function(event) {
+         $(this).css("box-shadow", "0px 0px 7px rgb(0, 102, 255)");
+     }).blur(function(event) {
+         if (typeof(global_data) == "undefined")
+         {
+             $(this).css("box-shadow", "0px 0px 0px");   
+         }
+         else
+         {
+             if (typeof(global_data[$(this).attr('id')]) == "undefined") 
+             {
+                 $(this).css("box-shadow", "0px 0px 0px");   
+             }
+             else
+             {
+                 $(this).css("box-shadow", "0px 0px 7px rgb(185, 74, 72)");
+             }               
+         }
+            
+     });
+
+    });
+</script>
+
+<!-- <div class="well">
+                    <div class="row">
+                        <div class="span3">
+                            <a href="" class="thumbnail">
+                            <img src="1small.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="span6">
+                            <h4>Название товара 
+
+                                <i class="icon-remove remove_product" style="float:right"></i><span class="price">1234 $  </span>
+
+                             </h4>
+                            <span class="label label-info">Телевизоры</span>
+                            <h5>Краткое описание</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta felis sed diam tincidunt ultrices. Duis euismod metus vehicula urna gravida fringilla. Curabitur pulvinar mollis est, a dictum justo ullamcorper ut. Vivamus aliquet faucibus nunc, vitae molestie lorem dignissim eu. Pellentesque eros orci, rutrum in lobortis ac, tristique a diam. Suspendisse vel ipsum lacus, nec sagittis turpis. Nunc varius</p>
+                            <hr>
+                            <h5>Список характеристик</h5>
+                            <a href="">Основные</a>
+                            <a href="">Все</a>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Характеристика</th>
+                                        <th>Значение</th>
+                                    </tr>
+                                    <tbody>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                    </tbody>
+                                </thead>
+                            </table>
+                            <h5>Полное описание</h5>
+                            <hr>
+                            <h5>Дата добавления</h5>
+                            <p> 25/12/12 </p>                     
+                        </div>
+                    </div>
+                </div>
+
+                <div class="well">
+                    <div class="row">
+                        <div class="span3">
+                            <img src="1small.jpg" alt="">
+                        </div>
+                        <div class="span6">
+                            <h4>Название товара <span class="price">1234 $</span> </h4>
+                            <h5>Краткое описание</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porta felis sed diam tincidunt ultrices. Duis euismod metus vehicula urna gravida fringilla. Curabitur pulvinar mollis est, a dictum justo ullamcorper ut. Vivamus aliquet faucibus nunc, vitae molestie lorem dignissim eu. Pellentesque eros orci, rutrum in lobortis ac, tristique a diam. Suspendisse vel ipsum lacus, nec sagittis turpis. Nunc varius</p>
+                            <hr>
+                            <h5>Список характеристик</h5>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Характеристика</th>
+                                        <th>Значение</th>
+                                    </tr>
+                                    <tbody>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Диагональ</td>
+                                            <td>19</td>
+                                        </tr>
+                                    </tbody>
+                                </thead>
+                            </table>
+                            <h5>Полное описание</h5>
+                            <hr>
+                            <h5>Дата добавления</h5>
+                            <p> 25/12/12 </p>                     
+                        </div>
+                    </div>
+                </div>
+
+            </div> -->
+
+            // $(document).on('click', '#search', function(event) {
+    //     event.preventDefault();
+    //     var date_added = $('#date_added').val();
+    //     var categories = $.trim($('#categories option:selected').text());
+    //     var price = $('#price').val();
+    //     var sorting = $('#sorting').val();
+    //     $.ajax({
+    //         url: "utils/products/show_products.php",
+    //         type: "POST",
+    //         dataType: "text",
+    //         success: function (data) {
+    //             //alert(data);
+    //             $('#show_products').html(data);
+    //         },
+    //         error: function (obj, err) {
+    //             alert("Error "+err);
+    //         },
+    //         data: {date_added: date_added,categories: categories,
+    //             price: price,sorting: sorting}
+    //     });
+    //     return false;
+    // });
+
+   // $('a.paginate').click(function(event) {
+   //      var date_added = $('#date_added').val();
+   //      var categories = $.trim($('#categories option:selected').text());
+   //      var price = $('#price').val();
+   //      var sorting = $('#sorting').val();
+   //      location.href = "http://localhost/eshop1/admin/products.php?page="+$(this).html()+"&categories="+categories;
+   //      return false;
+   //      //alert($(this).html())
+   //      //for (var i in event)
+   //          //alert(event.target)
+   //  });
+
+    // if (document.referrer.indexOf("admin/products.php")==-1)
+    // {
+    //     $.ajax({
+    //         url: "products.php",
+    //         type: "POST",
+    //         dataType: "text",
+    //         success: function (data) {
+    //             //alert(data);
+    //         },
+    //         error: function (obj, err) {
+    //             alert("Error "+err);
+    //         },
+    //         data: {clear: true}
+    //     });
+    // }
+
+   //$('.nav-header').next().addClass('active');
+
+
+   <!-- <div class="span12">
+            
+                <div class="span3">
+                    <strong>Фильтрация</strong>  <br> <br>
+                    <p>По дате добавления</p>
+                    <select id="date_added">
+                        <option value="1">Любое значение</option>
+                        <option value="2">Первый день</option>
+                        <option value="3">Менее недели</option>
+                        <option value="4">Менее 30 дней</option>
+                        <option value="5">Менее года</option>
+                        <option value="6">Более года</option>
+
+                    </select>
+                </div>
+                <div class="span3">
+                    <br> <br>
+                    <p>По категориям</p>
+                    <select id="categories">
+                        <option value="1">Любое значение</option>
+                        <?php 
+                            //echo "string";
+                            $cats = get_all_categories();
+                            $index = 2;
+                            //echo $cats;
+                            while ($row=mysql_fetch_row($cats))
+                            {
+                                echo "<option value='$index'>{$row[0]}</option>";
+                                //echo $row[0];
+                                $index++;
+                            }
+                         ?>
+                        
+                    </select>
+                </div>
+                <div class="span3">
+                    <br> <br> 
+                    <p>По цене</p>
+                    <select id="price">
+                        <option value="1">Любое значение</option>
+                        <option value="2">Дешевле 1$</option>
+                        <option value="3">От 1$ до 100$</option>
+                        <option value="4">От 100$ до 1000$</option>
+                        <option value="5">От 1000$ до 10.000$</option>
+                        <option value="6">Более 10.000$</option>
+                    </select>
+                </div>
+            </div>
+            <div class="span12">
+              
+                <div class="span3">
+                    <strong>Сортировка</strong>  <br> <br>
+                    <p>Сортировка значений</p>
+                    <select id="sorting">
+                        <option value="1">От дешевых к дорогим</option>
+                        <option value="2">От дорогих к дешевым</option>
+                        <option value="3">По рейтингу</option>
+                        <option value="4">Последние добавленные</option>
+                        <option value="5">Популярные</option>
+                    </select>
+                </div> 
+                <div class="span3">
+                    <strong>Поиск</strong>  <br> <br>
+                    <p>Поиск по всем полям</p>
+                    <input type="text" id="text_search" id="" placeholder="Поиск"> 
+                <a href="" class="btn btn-primary" id="search">
+                    <i class="icon-search icon-white"></i>
+                    Найти</a>
+                </div>
+                <div class="span5">
+                    <a href="add_product.php" class="btn btn-success  btn-primary">
+                        <i class="icon-plus icon-white"></i>
+                        Добавить товар</a>
+                    <a href="#ModalCreateCategory" data-toggle="modal" class="btn btn-success">
+                        <i class="icon-plus icon-white"></i>
+                        Добавить категорию</a>
+                </div>
+            </div> -->
+
+
+
+
+
+
+            <!-- <div class="row product_line">
+                    <div class="span2 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                    <div class="span2 offset1 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                    <div class="span2 offset1 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row product_line">
+                    <div class="span2 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                    <div class="span2 offset1 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                    <div class="span2 offset1 product_block">
+                        <div class="text_product">
+                            <a href="">ТОвар 1</a>
+                        </div> 
+                        <img src="http://placehold.it/150x150" class="product_image">   
+                        <div class="product_price">
+                            123$
+                        </div> 
+                        <div class="tmp_div">
+                            <a href="" class="btn btn-success btn-block">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                Добавить в корзину
+                            </a>
+                            <a href="" class="btn btn-info btn-block">
+                                <i class="icon-info-sign icon-white"></i>
+                                Инфо о товаре
+                            </a>
+                        </div>
+                    </div>
+                </div> -->

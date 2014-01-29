@@ -1,0 +1,4 @@
+AddDefaultCharset utf-8
+ErrorDocument 404 /eshop1/404.php
+php_value auto_prepend_file  "debug.php"
+#php_value auto_prepend_file  "stats/stats.php"
